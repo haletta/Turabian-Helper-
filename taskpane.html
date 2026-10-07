@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Turabian Helper</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <header class="app-head">
+    <div class="brand">
+      <span class="mark">T</span>
+      <div>
+        <h1>Turabian Helper</h1>
+        <p>Notes-bibliography · 9th ed. · Denver Seminary guides</p>
+      </div>
+    </div>
+  </header>
+
+  <div id="notInWord" class="banner hidden">
+    This page only works inside Microsoft Word. Open Word and start Turabian Helper from the Home tab.
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="title" role="tab">Title page</button>
+    <button class="tab" data-tab="format" role="tab">Format</button>
+    <button class="tab" data-tab="scripture" role="tab">Scripture</button>
+    <button class="tab" data-tab="check" role="tab">Check</button>
+  </nav>
+
+  <main>
+    <!-- TITLE PAGE -->
+    <section class="panel active" id="panel-title">
+      <p class="lead">Fill this in once. Your name, course and professor are remembered for next time.</p>
+      <label>Title<input id="tpTitle" type="text" placeholder="Grace and Works in Romans" /></label>
+      <label>Subtitle <span class="opt">(optional)</span><input id="tpSubtitle" type="text" placeholder="A Study of Romans 3–4" /></label>
+      <label>Your name<input id="tpName" type="text" /></label>
+      <label>Course number and name<input id="tpCourse" type="text" placeholder="NT 501 New Testament Introduction" /></label>
+      <label>Professor / instructor<input id="tpProfessor" type="text" placeholder="Dr. Jane Smith" /></label>
+      <label>Date<input id="tpDate" type="text" /></label>
+      <label class="check"><input id="tpBold" type="checkbox" checked /> Bold title and subtitle</label>
+      <button class="primary" id="btnTitlePage">Insert title page</button>
+      <p class="hint">Places the title on line 8 and your name on line 24, as in the Writing Center template. If the document already has one, it is replaced. No page number appears on this page.</p>
+    </section>
+
+    <!-- FORMAT -->
+    <section class="panel" id="panel-format">
+      <h2>Whole paper</h2>
+      <button class="primary" id="btnSetup">Set up this paper in Turabian</button>
+      <p class="hint">Times New Roman 12 pt, double-spaced text with 0.5″ indents, left-aligned, 10 pt single-spaced footnotes, page numbers top right starting with 2, 1″ margins. Safe to run again any time.</p>
+      <ul id="setupLog" class="log"></ul>
+
+      <h2>Headings <span class="sub">select the heading line first</span></h2>
+      <div class="grid4">
+        <button data-heading="1" title="Centered, bold, headline-style">Level 1</button>
+        <button data-heading="2" title="Centered, regular, headline-style">Level 2</button>
+        <button data-heading="3" title="Flush left, bold, headline-style">Level 3</button>
+        <button data-heading="4" title="Flush left, regular, sentence-style">Level 4</button>
+      </div>
+      <p class="hint">Level 1 and 2 are centered; 3 and 4 flush left. Each gets extra space above (a triple space).</p>
+
+      <h2>Paragraphs <span class="sub">select the paragraphs first</span></h2>
+      <div class="grid2">
+        <button id="btnBlockQuote" title="Five or more lines of quotation">Block quotation</button>
+        <button id="btnNormal">Normal text</button>
+      </div>
+
+      <h2>Bibliography</h2>
+      <div class="grid2">
+        <button id="btnBibHeading">Add Bibliography page</button>
+        <button id="btnBibEntries">Format selected entries</button>
+      </div>
+      <p class="hint">Starts a new page with “Bibliography” and two blank lines below it. Entries: single-spaced, a blank line between, 0.5″ hanging indent. Works on a Zotero bibliography too.</p>
+
+      <h2>Preferences</h2>
+      <label>Number-range dash
+        <select id="optDash">
+          <option value="en">En dash: 642–43 (2026 guide)</option>
+          <option value="hyphen">Hyphen: 642-43 (older guides)</option>
+        </select>
+      </label>
+      <label>Bible book abbreviations
+        <select id="optAbbrev">
+          <option value="traditional">Traditional: Jer., 1 Cor., Matt.</option>
+          <option value="short">Shorter: Jer, 1 Cor, Mt</option>
+        </select>
+      </label>
+    </section>
+
+    <!-- SCRIPTURE -->
+    <section class="panel" id="panel-scripture">
+      <p class="lead">Type a reference any way you like: “jn 3:16”, “1 thess 4:11, 5:2-5”, “Psalm 23”.</p>
+      <label>Reference<input id="scRef" type="text" placeholder="Jeremiah 31:4" autocomplete="off" /></label>
+      <label>Version
+        <input id="scVersion" type="text" list="versions" placeholder="NIV" />
+        <datalist id="versions">
+          <option value="NIV"></option><option value="ESV"></option><option value="NRSV"></option>
+          <option value="NASB"></option><option value="KJV"></option><option value="NLT"></option>
+          <option value="CSB"></option><option value="NKJV"></option>
+        </datalist>
+      </label>
+      <fieldset>
+        <legend>How are you using it?</legend>
+        <label class="radio"><input type="radio" name="scMode" value="paren" checked /> After a quotation <span class="eg">(Jer. 31:4 NIV)</span></label>
+        <label class="radio"><input type="radio" name="scMode" value="running" /> Named in my sentence <span class="eg">Jeremiah 31:4</span></label>
+        <label class="radio"><input type="radio" name="scMode" value="note" /> Inside a footnote <span class="eg">Jer. 31:4</span></label>
+      </fieldset>
+      <label class="check" id="scPeriodWrap"><input id="scPeriod" type="checkbox" checked /> End the sentence with a period after it</label>
+      <div class="preview"><span class="label">Will insert</span><span id="scPreview">—</span></div>
+      <div id="scNote" class="hint"></div>
+      <button class="primary" id="btnScripture">Insert at cursor</button>
+
+      <div class="primary-version">
+        <span>Primary version: <strong id="scPrimary">not set yet</strong></span>
+        <button class="link" id="btnResetPrimary">Reset</button>
+      </div>
+      <p class="hint">Your first quotation shows the version and adds the footnote “Unless otherwise noted, all scripture references are from the …”. After that the version only appears when it differs.</p>
+
+      <h2>Whole paper</h2>
+      <button id="btnScriptureConsistent">Make all scripture citations consistent</button>
+      <p class="hint">Rewrites every parenthetical citation, such as (Jn 3:16), in the abbreviation style chosen under Format → Preferences.</p>
+    </section>
+
+    <!-- CHECK -->
+    <section class="panel" id="panel-check">
+      <p class="lead">Checks your paper against the Turabian Formatting Checklist and the Writing Center citation guides.</p>
+      <button class="primary" id="btnCheck">Check my paper</button>
+      <div id="checkSummary" class="summary hidden"></div>
+      <button id="btnFixAllFormat" class="hidden">Fix all formatting issues</button>
+      <div id="checkResults"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script src="rules.js"></script>
+  <script src="taskpane.js"></script>
+</body>
+</html>
